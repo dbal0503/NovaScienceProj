@@ -2,10 +2,8 @@ import cv2
 import streamlit as st
 
 st.title("Smile Detector Application")
-st.write('Press Q to close the window')
 run = st.checkbox('Run Smile Detector')
-
-
+FRAME_WINDOW = st.image([])
 cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 smile_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_smile.xml')
@@ -27,7 +25,8 @@ while run:
             cv2.rectangle(roi_color, (sx, sy), (sx + sw, sy + sh), (0, 0, 255), 2)
             if len(smile) > 0:
                 cv2.putText(frame, 'Smiling', (200, height - 10), font, 4 ,(0, 0, 0), 5, cv2.LINE_AA)
-    cv2.imshow('frame', frame)
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    FRAME_WINDOW.image(frame)
     if cv2.waitKey(1) == ord('q'):
         break
 else:
